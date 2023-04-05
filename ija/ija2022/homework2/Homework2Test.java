@@ -71,10 +71,15 @@ public class Homework2Test {
     public void testGhostMoving() {
         // Ghost na pozici 1,3
         CommonMazeObject obj = maze.ghosts().get(0);
+        Assert.assertFalse("Presun na policko se podari.", maze.getField(1, 3).isEmpty());
         Assert.assertTrue("Presun na policko se podari.", obj.move(CommonField.Direction.D));
+        Assert.assertTrue("Presun na policko se podari.", maze.getField(1, 3).isEmpty());
         Assert.assertTrue("Presun na policko se podari.", obj.move(CommonField.Direction.D));
         Assert.assertTrue("Presun na policko se podari.", obj.move(CommonField.Direction.D));
         Assert.assertFalse("Presun na policko se nepodari.", obj.move(CommonField.Direction.R));
+        Assert.assertEquals("Objekt je na spravne pozici",
+                maze.getField(4, 3),
+                obj.getField());
     }
 
     /**

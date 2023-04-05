@@ -19,6 +19,7 @@ public interface CommonField extends Observable {
     boolean put(CommonMazeObject object);
     boolean remove(CommonMazeObject object);
     boolean setMaze(CommonMaze CommonMaze);
+    boolean contains(CommonMazeObject obj);
 
     public CommonMaze getMaze();
 }

@@ -6,10 +6,10 @@ import ija.ija2022.homework2.tool.common.CommonField;
 import java.util.Objects;
 
 public class GhostObject implements CommonMazeObject {
-    CommonField myField;
+    PathField myField;
 
     public GhostObject(CommonField CommonField) {
-        myField = CommonField;
+        myField = (PathField) CommonField;
     }
 
     public boolean canMove(CommonField.Direction dir) {
@@ -28,9 +28,10 @@ public class GhostObject implements CommonMazeObject {
         }
 
         GhostObject tmp = this;
-        myField.remove(this);
-        myField.nextField(dir).put(tmp);
-        myField = myField.nextField(dir);
+        
+        this.myField.remove(this);
+        this.myField.nextField(dir).put(this);
+        this.myField = (PathField) this.myField.nextField(dir);
         return true;
     }
 

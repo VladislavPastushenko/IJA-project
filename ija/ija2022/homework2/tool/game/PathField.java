@@ -32,11 +32,14 @@ public class PathField extends AbstractObservableField implements CommonField {
     }
 
     public boolean equals(Object obj) {
-        if (!(obj instanceof PathField)) {
+        if (this == obj){ // Test for identity
+            return true;
+        }
+        if (!(obj instanceof PathField)){ // Test before casting
             return false;
         }
-
-        return true;
+        PathField my_path_obj = (PathField) obj; // Casting
+        return (my_path_obj.fieldRow == (this.fieldRow) && my_path_obj.fieldCol == (this.fieldCol));
     }
 
     public CommonMazeObject get() {
@@ -70,8 +73,8 @@ public class PathField extends AbstractObservableField implements CommonField {
         if (!this.isEmpty()) {
             return false;
         }
-
-        fieldObject = object;
+        this.notifyObservers();
+        this.fieldObject = object;
         return true;
     }
 
@@ -79,8 +82,12 @@ public class PathField extends AbstractObservableField implements CommonField {
         if (this.isEmpty()) {
             return false;
         }
-
-        fieldObject = null;
+        this.notifyObservers();
+        this.fieldObject = null;
         return true;
     }
+
+	public boolean contains(CommonMazeObject obj) {
+		return obj == this.fieldObject;
+	}
 }

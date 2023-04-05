@@ -29,11 +29,14 @@ public class WallField extends AbstractObservableField implements CommonField {
     }
 
     public boolean equals(Object obj) {
-        if (!(obj instanceof WallField)) {
+        if (this == obj){ // Test for identity
+            return true;
+        }
+        if (!(obj instanceof WallField)){ // Test before casting
             return false;
         }
-
-        return true;
+        WallField my_wall_obj = (WallField) obj; // Casting
+        return (my_wall_obj.fieldRow == (this.fieldRow) && my_wall_obj.fieldCol == (this.fieldCol));
     }
 
     public CommonMazeObject get() {
@@ -68,4 +71,8 @@ public class WallField extends AbstractObservableField implements CommonField {
     public boolean remove(CommonMazeObject object) {
         return true;
     }
+
+	public boolean contains(CommonMazeObject obj) {
+		return false;
+	}
 }
