@@ -12,7 +12,8 @@ public class PathField extends AbstractObservableField implements CommonField {
     int fieldRow;
     int fieldCol;
 
-    CommonMazeObject fieldObject;
+    CommonMazeObject ghostObject;
+    CommonMazeObject pacmanObject;
 
     CommonMaze currentMaze;
 
@@ -20,7 +21,8 @@ public class PathField extends AbstractObservableField implements CommonField {
         fieldRow = row;
         fieldCol = col;
 
-        fieldObject = null;
+        ghostObject = null;
+        pacmanObject = null;
     }
 
     public boolean canMove() {
@@ -28,7 +30,8 @@ public class PathField extends AbstractObservableField implements CommonField {
     }
 
     public boolean isEmpty() {
-        return fieldObject == null;
+
+        return (ghostObject == null)&&(pacmanObject == null);
     }
 
     public boolean equals(Object obj) {
@@ -43,7 +46,10 @@ public class PathField extends AbstractObservableField implements CommonField {
     }
 
     public CommonMazeObject get() {
-        return fieldObject;
+        if (pacmanObject != null){
+            return pacmanObject;
+        }
+        return ghostObject;
     }
 
     public CommonMaze getMaze() {
@@ -73,8 +79,12 @@ public class PathField extends AbstractObservableField implements CommonField {
         if (!this.isEmpty()) {
             return false;
         }
+        if (object instanceof GhostObject){
+            this.ghostObject = object;
+        } else {
+            this.pacmanObject = object;
+        }
         this.notifyObservers();
-        this.fieldObject = object;
         return true;
     }
 
@@ -82,12 +92,17 @@ public class PathField extends AbstractObservableField implements CommonField {
         if (this.isEmpty()) {
             return false;
         }
+        
+        if (object instanceof GhostObject){
+            this.ghostObject = null;
+        } else {
+            this.pacmanObject = null;
+        }
         this.notifyObservers();
-        this.fieldObject = null;
         return true;
     }
 
 	public boolean contains(CommonMazeObject obj) {
-		return obj == this.fieldObject;
+		return obj == this.ghostObject;
 	}
 }
