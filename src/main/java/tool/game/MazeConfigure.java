@@ -49,7 +49,7 @@ public class MazeConfigure {
                     }
                     row++;
                 }
-                
+
             }
             System.out.println(tmprow);
             System.out.print(tmpcol);
@@ -76,7 +76,6 @@ public class MazeConfigure {
     }
 
     public boolean processLine(String path) {
-        
         try (BufferedReader reader = new BufferedReader(new FileReader(path))) {
             String line;
             line = reader.readLine();
@@ -90,7 +89,9 @@ public class MazeConfigure {
                             mazeBoard[processedLinePointer][i] = new PathField(processedLinePointer + 1, i + 1);
                             break;
                         case 'T':
-                            mazeBoard[processedLinePointer][i] = new PathField(processedLinePointer + 1, i + 1);
+                            PathField targetField = new PathField(processedLinePointer + 1, i + 1);
+                            targetField.setIsTarget();
+                            mazeBoard[processedLinePointer][i] = targetField;
                             break;
                         case 'G':
                             PathField commonFieldGhost = new PathField(processedLinePointer + 1, i + 1);
@@ -99,7 +100,9 @@ public class MazeConfigure {
                             mazeBoard[processedLinePointer][i] = commonFieldGhost;
                             break;
                         case 'K':
-                            mazeBoard[processedLinePointer][i] = new PathField(processedLinePointer + 1, i + 1);
+                            PathField keyField = new PathField(processedLinePointer + 1, i + 1);
+                            keyField.setIsKey(true);
+                            mazeBoard[processedLinePointer][i] = keyField;
                             break;
                         case 'S':
                             PathField commonFieldPacman = new PathField(processedLinePointer + 1, i + 1);

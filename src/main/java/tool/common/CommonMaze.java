@@ -13,4 +13,6 @@ public interface CommonMaze {
     public List<CommonMazeObject> ghosts();
 
     public void randomGhostsMovement();
+
+    public boolean keys();
 }

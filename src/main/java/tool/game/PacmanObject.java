@@ -8,10 +8,12 @@ import tool.common.CommonMazeObject;
 public class PacmanObject implements CommonMazeObject {
     CommonField myField;
     int lives;
+    boolean win;
 
     public PacmanObject(CommonField CommonField) {
         myField = CommonField;
-        lives = 3;
+        lives = 1;
+        win = false;
     }
 
     public boolean canMove(CommonField.Direction dir) {
@@ -31,6 +33,16 @@ public class PacmanObject implements CommonMazeObject {
         myField.nextField(dir).put(tmp);
 
         myField = myField.nextField(dir);
+
+        if (myField.isKey()) {
+            myField.setIsKey(false);
+        }
+
+        if (myField.isTarget()) {
+            if (!myField.getMaze().keys()) {
+                win = true;
+            }
+        }
         return true;
     }
 
@@ -52,5 +64,9 @@ public class PacmanObject implements CommonMazeObject {
 
     public int damage() {
         return --lives;
+    }
+
+    public boolean getWin() {
+        return win;
     }
 }

@@ -69,6 +69,23 @@ public class PacmanMaze implements CommonMaze {
         return ghostsList;
     }
 
+    public boolean keys() {
+
+        for (int row = 0; row < mazeRows; row++) {
+            for (int col = 0; col < mazeCols; col++) {
+                if (row == 0 || col == 0 || row == mazeRows - 1 || col == mazeCols - 1) {
+                    continue;
+                }
+                CommonField field = mazeBoard[row][col];
+                if (field.isKey()) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
     public void randomGhostsMovement() {
         List<CommonMazeObject> ghostsList = ghosts();
         for (int i = 0; i < ghostsList.size(); i++) {

@@ -13,6 +13,10 @@ public class GhostObject implements CommonMazeObject {
     }
 
     public boolean canMove(CommonField.Direction dir) {
+        CommonMazeObject obj = myField.nextField(dir).get();
+        if (obj != null && !obj.isPacman()) {
+            return false;
+        }
         return myField.nextField(dir).canMove();
     }
     public boolean move(CommonField.Direction dir)  {
@@ -55,4 +59,8 @@ public class GhostObject implements CommonMazeObject {
     public int damage() {
         return 0;
     }
+
+    public boolean getWin() {
+        return false;
+    };
 }

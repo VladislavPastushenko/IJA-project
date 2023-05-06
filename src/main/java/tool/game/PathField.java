@@ -8,6 +8,8 @@ import tool.common.CommonMazeObject;
 public class PathField extends AbstractObservableField implements CommonField {
     int fieldRow;
     int fieldCol;
+    boolean isTarget;
+    boolean isKey;
 
     CommonMazeObject ghostObject;
     CommonMazeObject pacmanObject;
@@ -20,6 +22,7 @@ public class PathField extends AbstractObservableField implements CommonField {
 
         ghostObject = null;
         pacmanObject = null;
+        isTarget = false;
     }
 
     public boolean canMove() {
@@ -101,4 +104,20 @@ public class PathField extends AbstractObservableField implements CommonField {
 	public boolean contains(CommonMazeObject obj) {
 		return obj == this.ghostObject;
 	}
+
+    public void setIsTarget() {
+        isTarget = true;
+    }
+
+    public boolean isTarget() {
+        return isTarget;
+    }
+
+    public void setIsKey(boolean value) {
+        isKey = value;
+    }
+
+    public boolean isKey() {
+        return isKey;
+    }
 }

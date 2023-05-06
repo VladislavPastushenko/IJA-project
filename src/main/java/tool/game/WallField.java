@@ -73,4 +73,14 @@ public class WallField extends AbstractObservableField implements CommonField {
 	public boolean contains(CommonMazeObject obj) {
 		return false;
 	}
+
+    public boolean isTarget() {
+        return false;
+    }
+
+    public void setIsKey(boolean value) {}
+
+    public boolean isKey() {
+        return false;
+    }
 }

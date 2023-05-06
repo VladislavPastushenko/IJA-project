@@ -12,4 +12,6 @@ public interface CommonMazeObject {
     public int getLives();
 
     public int damage();
+
+    public boolean getWin();
 }

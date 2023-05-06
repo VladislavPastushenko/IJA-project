@@ -19,4 +19,8 @@ public interface CommonField extends Observable {
     boolean contains(CommonMazeObject obj);
 
     public CommonMaze getMaze();
+
+    public boolean isTarget();
+    public boolean isKey();
+    public void setIsKey(boolean value);
 }

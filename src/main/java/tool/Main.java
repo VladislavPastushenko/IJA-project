@@ -43,7 +43,15 @@ public class Main extends Application {
 
                 if (field.canMove()) {
                     if (field.isEmpty()) {
-                        fieldLabel = new Label("_");
+                        if (field.isTarget()) {
+                            fieldLabel = new Label("T");
+                        }
+                        else if (field.isKey()) {
+                            fieldLabel = new Label("K");
+                        }
+                        else {
+                            fieldLabel = new Label("_");
+                        }
                     }
                     else {
                         CommonMazeObject obj = field.get();
@@ -69,7 +77,7 @@ public class Main extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         MazeConfigure cfg = new MazeConfigure();
-        cfg.readFromFile("/Users/marina/IJA-project/mapa01.txt");
+        cfg.readFromFile("/home/vlad/Desktop/ija/IJA-project/mapa01.txt");
         cfg.stopReading();
 
 
@@ -119,6 +127,16 @@ public class Main extends Application {
             pacman.move(direction);
         }
 
+        if (pacman.getWin()) {
+            win(stage);
+            return;
+        }
+
+        if (pacman.getLives() == 0) {
+            died(stage);
+            return;
+        }
+
         maze.randomGhostsMovement();
 
         VBox vbox = buildMaze(maze);
@@ -151,10 +169,24 @@ public class Main extends Application {
                 catch (InterruptedException e) { }
                 return null;
             }
-        };
+         };
         sleeper.setOnSucceeded(event -> continuation.run());
         new Thread(sleeper).start();
       }
+
+    public void died(Stage stage) {
+        Label endLabel = new Label("You died. Game over.");
+        endLabel.setAlignment(Pos.CENTER);
+        Scene newScene = new Scene(endLabel);
+        stage.setScene(newScene);
+    }
+
+    public void win(Stage stage) {
+        Label endLabel = new Label("You won!");
+        endLabel.setAlignment(Pos.CENTER);
+        Scene newScene = new Scene(endLabel);
+        stage.setScene(newScene);
+    }
 
     public static void main(String[] args) {
         launch();
