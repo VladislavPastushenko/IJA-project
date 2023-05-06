@@ -3,9 +3,12 @@ package tool.game;
 import java.util.ArrayList;
 import java.util.List;
 
+import javafx.scene.control.skin.TextInputControlSkin.Direction;
 import tool.common.CommonField;
 import tool.common.CommonMaze;
 import tool.common.CommonMazeObject;
+
+import java.util.concurrent.ThreadLocalRandom;
 
 public class PacmanMaze implements CommonMaze {
     int mazeRows;
@@ -64,5 +67,21 @@ public class PacmanMaze implements CommonMaze {
         }
 
         return ghostsList;
+    }
+
+    public void randomGhostsMovement() {
+        List<CommonMazeObject> ghostsList = ghosts();
+        for (int i = 0; i < ghostsList.size(); i++) {
+            while (true) {
+                int randomNum = ThreadLocalRandom.current().nextInt(0, 4);
+                CommonField.Direction[] directions = {CommonField.Direction.U, CommonField.Direction.D, CommonField.Direction.L, CommonField.Direction.R};
+                CommonField.Direction direction = directions[randomNum];
+                if (ghostsList.get(i).canMove(direction)) {
+                    System.out.println("MOVEMENT");
+                    ghostsList.get(i).move(direction);
+                    break;
+                }
+            }
+        }
     }
 }

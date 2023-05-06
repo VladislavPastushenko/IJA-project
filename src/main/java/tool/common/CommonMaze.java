@@ -11,4 +11,6 @@ public interface CommonMaze {
     CommonMaze create(int rows, int cols, CommonField[][] board);
 
     public List<CommonMazeObject> ghosts();
+
+    public void randomGhostsMovement();
 }
