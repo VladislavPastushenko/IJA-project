@@ -28,12 +28,11 @@ public class GhostObject implements CommonMazeObject {
         }
 
         GhostObject tmp = this;
-        
+
         this.myField.nextField(dir).put(tmp);
         this.myField.remove(tmp);
         this.myField = this.myField.nextField(dir);
-        
-        
+
         return true;
     }
 
