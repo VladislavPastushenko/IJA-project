@@ -51,6 +51,7 @@ public class MazeConfigure {
                     mazeBoard[processedLinePointer][i] = new PathField(processedLinePointer + 1, i + 1);
                     break;
                 case 'T':
+                    // TODO
                     mazeBoard[processedLinePointer][i] = new PathField(processedLinePointer + 1, i + 1);
                     break;
                 case 'G':
@@ -60,6 +61,7 @@ public class MazeConfigure {
                     mazeBoard[processedLinePointer][i] = commonFieldGhost;
                     break;
                 case 'K':
+                    // TODO
                     mazeBoard[processedLinePointer][i] = new PathField(processedLinePointer + 1, i + 1);
                     break;
                 case 'S':

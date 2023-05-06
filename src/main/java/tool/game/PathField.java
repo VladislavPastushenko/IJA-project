@@ -89,7 +89,6 @@ public class PathField extends AbstractObservableField implements CommonField {
         if (this.isEmpty()) {
             return false;
         }
-        
         if (object instanceof GhostObject){
             this.ghostObject = null;
         } else {
