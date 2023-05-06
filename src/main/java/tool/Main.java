@@ -69,11 +69,7 @@ public class Main extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         MazeConfigure cfg = new MazeConfigure();
-        cfg.startReading(4, 3);
-        cfg.processLine("..G");
-        cfg.processLine(".X.");
-        cfg.processLine(".X.");
-        cfg.processLine(".S.");
+        cfg.readFromFile("/Users/marina/IJA-project/mapa01.txt");
         cfg.stopReading();
 
 
