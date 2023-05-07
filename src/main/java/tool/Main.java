@@ -15,6 +15,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
+import javafx.scene.text.Font;
 import javafx.stage.*;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -47,7 +48,7 @@ public class Main extends Application {
 
         Button btnNewGame = new Button("Start new game");
         btnNewGame.addEventHandler(ActionEvent.ACTION, e -> {
-            newGame(stage);
+            selectGame(stage);
         });
 
         Button btnPlayback = new Button("Playback");
@@ -59,16 +60,50 @@ public class Main extends Application {
 
         Scene newScene = new Scene(vbox);
 
+        newScene.getStylesheets().add("style.css");
+
         stage.setTitle("IJA Pacman");
-        stage.setWidth(600);
-        stage.setHeight(600);
+
         stage.setScene(newScene);
+        stage.setMinWidth(600);
+        stage.setMinHeight(600);
         stage.show();
     }
 
-    public void newGame(Stage stage) {
+    public void selectGame(Stage stage) {
+        VBox vbox = new VBox();
+        vbox.setMinWidth(600);
+        vbox.setMinHeight(600);
+        vbox.setSpacing(10);
+        vbox.setPadding(new Insets(10, 10, 10, 10));
+        vbox.setAlignment(Pos.CENTER);
+
+        Button firstMapButton = new Button("Choose 1 map");
+        firstMapButton.addEventHandler(ActionEvent.ACTION, e -> {
+            newGame(stage, "data/maps/mapa01.txt");
+        });
+
+        Button secondMapButton = new Button("Choose 2 map");
+        secondMapButton.addEventHandler(ActionEvent.ACTION, e -> {
+            newGame(stage, "data/maps/mapa02.txt");
+        });
+
+        Button thirdMapButton = new Button("Choose 3 map");
+        thirdMapButton.addEventHandler(ActionEvent.ACTION, e -> {
+            newGame(stage, "data/maps/mapa03.txt");
+        });
+
+        vbox.getChildren().addAll(firstMapButton, secondMapButton, thirdMapButton);
+
+        Scene newScene = new Scene(vbox);
+
+        newScene.getStylesheets().add("style.css");
+        stage.setScene(newScene);
+    }
+
+    public void newGame(Stage stage, String path) {
         MazeConfigure cfg = new MazeConfigure();
-        cfg.readFromFile("data/maps/mapa01.txt");
+        cfg.readFromFile(path);
         cfg.stopReading();
 
         maze = cfg.createMaze();
@@ -76,9 +111,14 @@ public class Main extends Application {
         log = Integer.toString(maze.numRows() - 2) + " " + Integer.toString(maze.numCols() - 2 ) + "\r\n";
 
         VBox vbox = buildMaze(maze);
+        Label detailsLabel = new Label(details);
+        detailsLabel.setPadding(new Insets(10, 0, 0, 0));
+        detailsLabel.setAlignment(Pos.CENTER);
+        vbox.getChildren().addAll(detailsLabel);
+
         Scene primaryScene = new Scene(vbox);
+        primaryScene.getStylesheets().add("style.css");
         stage.setScene(primaryScene);
-        stage.show();
 
         primaryScene.setOnKeyPressed(e -> {
             switch (e.getCode()) {
@@ -98,7 +138,7 @@ public class Main extends Application {
          });
 
          eventLoop = new Timeline(
-                 new KeyFrame(Duration.seconds(0.5),
+                 new KeyFrame(Duration.seconds(0.3),
                  new EventHandler<ActionEvent>() {
 
             @Override
@@ -118,24 +158,26 @@ public class Main extends Application {
         }
 
         if (pacman.getWin()) {
-            endGame(stage);
+            endGame(stage, "You won!");
             return;
         }
 
         if (pacman.getLives() <= 0) {
-            endGame(stage);
+            endGame(stage, "You died. Game over.");
             return;
         }
 
         maze.randomGhostsMovement();
 
         VBox vbox = buildMaze(maze);
-        HBox hbox = new HBox(10, vbox);
         Label detailsLabel = new Label(details);
+        detailsLabel.setFont(new Font("Arial", 20));
+        detailsLabel.setPadding(new Insets(10, 0, 0, 0));
         detailsLabel.setAlignment(Pos.CENTER);
 
-        hbox.getChildren().addAll(detailsLabel);
-        Scene newScene = new Scene(hbox);
+        vbox.getChildren().addAll(detailsLabel);
+        Scene newScene = new Scene(vbox);
+        newScene.getStylesheets().add("style.css");
         stage.setScene(newScene);
 
         newScene.setOnKeyPressed(e -> {
@@ -268,18 +310,18 @@ public class Main extends Application {
         new Thread(sleeper).start();
       }
 
-    public void endGame(Stage stage) {
+    public void endGame(Stage stage, String text) {
         VBox vbox = new VBox();
         vbox.setPadding(new Insets(10, 10, 10, 10));
         vbox.setSpacing(10);
         vbox.setAlignment(Pos.CENTER);
 
-        Label endLabel = new Label("Game over.");
+        Label endLabel = new Label(text);
         endLabel.setAlignment(Pos.CENTER);
 
         Button btnNewGame = new Button("Start new game");
         btnNewGame.addEventHandler(ActionEvent.ACTION, e -> {
-            newGame(stage);
+            selectGame(stage);
         });
         Button saveButton = new Button("Save log of game");
         saveButton.addEventHandler(ActionEvent.ACTION, e -> {
@@ -292,8 +334,8 @@ public class Main extends Application {
 
         vbox.getChildren().addAll(endLabel, btnNewGame, saveButton, btnPlayback);
 
-
         Scene newScene = new Scene(vbox);
+        newScene.getStylesheets().add("style.css");
         stage.setScene(newScene);
         eventLoop.stop();
     }
@@ -303,7 +345,6 @@ public class Main extends Application {
             FileWriter myWriter = new FileWriter("data/logs/log.txt");
             myWriter.write(log);
             myWriter.close();
-            System.out.println("Successfully wrote to the file.");
           } catch (IOException e) {
             System.out.println("An error occurred.");
             e.printStackTrace();
@@ -312,23 +353,28 @@ public class Main extends Application {
 
     public void playbackStart(Stage stage) {
         VBox vbox = new VBox();
+        vbox.setMinWidth(600);
+        vbox.setMinHeight(600);
         vbox.setPadding(new Insets(10, 10, 10, 10));
         vbox.setSpacing(10);
+        vbox.setAlignment(Pos.CENTER);
 
-        Button btnReadStart = new Button("Read start");
+        Label header = new Label("Choose the option");
+
+        Button btnReadStart = new Button("Read from start");
         btnReadStart.addEventHandler(ActionEvent.ACTION, e -> {
             playback(stage, 0);
         });
 
-        Button btnReadFinish = new Button("Read finish");
+        Button btnReadFinish = new Button("Read from finish");
         btnReadFinish.addEventHandler(ActionEvent.ACTION, e -> {
             String log = readFile("data/logs/log.txt");
-            System.out.println(getLogStepsNumber(log));
             playback(stage, getLogStepsNumber(log) - 1);
         });
 
-        vbox.getChildren().addAll(btnReadStart, btnReadFinish);
+        vbox.getChildren().addAll(header, btnReadStart, btnReadFinish);
         Scene newScene = new Scene(vbox);
+        newScene.getStylesheets().add("style.css");
         stage.setScene(newScene);
     }
 
@@ -338,6 +384,7 @@ public class Main extends Application {
         setTmpFile(mazeString);
 
         VBox vbox = new VBox();
+        vbox.setPadding(new Insets(0, 0, 10, 0));
 
         MazeConfigure cfg = new MazeConfigure();
         cfg.readFromFile("data/maps/tmp.txt");
@@ -399,6 +446,7 @@ public class Main extends Application {
         vbox.getChildren().addAll(mazeVbox, hbox, exitButton);
         vbox.setAlignment(Pos.CENTER);
         Scene newScene = new Scene(vbox);
+        newScene.getStylesheets().add("style.css");
         stage.setScene(newScene);
 
         if (playPauseEventLoop) {
@@ -441,7 +489,6 @@ public class Main extends Application {
             FileWriter myWriter = new FileWriter("data/maps/tmp.txt");
             myWriter.write(string);
             myWriter.close();
-            System.out.println("Successfully wrote to the file.");
           } catch (IOException e) {
             System.out.println("An error occurred.");
             e.printStackTrace();
