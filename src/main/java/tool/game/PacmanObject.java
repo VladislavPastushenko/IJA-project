@@ -1,3 +1,9 @@
+/**
+ * Project name: IJA-project
+ * File name: PacmanObject.java
+ * Authors: Pastushenko Vladislav(xpastu04)
+ * Description: Pacman class
+ */
 package tool.game;
 
 import java.util.Objects;
