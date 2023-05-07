@@ -69,7 +69,7 @@ public class Main extends Application {
 
     public void newGame(Stage stage) {
         MazeConfigure cfg = new MazeConfigure();
-        cfg.readFromFile("data/maps/maze01.txt");
+        cfg.readFromFile("data/maps/mapa03.txt");
         cfg.stopReading();
 
         maze = cfg.createMaze();
