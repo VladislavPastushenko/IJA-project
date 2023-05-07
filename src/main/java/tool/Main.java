@@ -69,7 +69,7 @@ public class Main extends Application {
 
     public void newGame(Stage stage) {
         MazeConfigure cfg = new MazeConfigure();
-        cfg.readFromFile("/home/vlad/Desktop/ija/IJA-project/data/maps/maze01.txt");
+        cfg.readFromFile("data/maps/maze01.txt");
         cfg.stopReading();
 
         maze = cfg.createMaze();
@@ -157,15 +157,15 @@ public class Main extends Application {
         try {
             VBox vbox = new VBox();
             vbox.setAlignment(Pos.CENTER);
-            Image imageOfGhost = new Image(new FileInputStream("/Users/marina/IJA-project/src/main/java/tool/images/ghost.png"));
-            Image imageOfWall = new Image(new FileInputStream("/Users/marina/IJA-project/src/main/java/tool/images/bedrock.png"));
-            Image imageOfTarget = new Image(new FileInputStream("/Users/marina/IJA-project/src/main/java/tool/images/target.png"));
-            Image imageOfKey = new Image(new FileInputStream("/Users/marina/IJA-project/src/main/java/tool/images/key.png"));
-            Image imageOfPacmanUp = new Image(new FileInputStream("/Users/marina/IJA-project/src/main/java/tool/images/pacmanUp.png"));
-            Image imageOfPacmanRight = new Image(new FileInputStream("/Users/marina/IJA-project/src/main/java/tool/images/pacmanRight.png"));
-            Image imageOfPacmanLeft = new Image(new FileInputStream("/Users/marina/IJA-project/src/main/java/tool/images/pacmanLeft.png"));
-            Image imageOfPacmanDown = new Image(new FileInputStream("/Users/marina/IJA-project/src/main/java/tool/images/pacmanDown.png"));
-            Image imageOfPath = new Image(new FileInputStream("/Users/marina/IJA-project/src/main/java/tool/images/dirt.png"));
+            Image imageOfGhost = new Image(new FileInputStream("data/images/ghost.png"));
+            Image imageOfWall = new Image(new FileInputStream("data/images/bedrock.png"));
+            Image imageOfTarget = new Image(new FileInputStream("data/images/target.png"));
+            Image imageOfKey = new Image(new FileInputStream("data/images/key.png"));
+            Image imageOfPacmanUp = new Image(new FileInputStream("data/images/pacmanUp.png"));
+            Image imageOfPacmanRight = new Image(new FileInputStream("data/images/pacmanRight.png"));
+            Image imageOfPacmanLeft = new Image(new FileInputStream("data/images/pacmanLeft.png"));
+            Image imageOfPacmanDown = new Image(new FileInputStream("data/images/pacmanDown.png"));
+            Image imageOfPath = new Image(new FileInputStream("data/images/dirt.png"));
             
             for (int row = 0; row < maze.numRows(); row++) {
 
@@ -201,19 +201,15 @@ public class Main extends Application {
                                 } else {
                                     switch (direction) {
                                         case D:
-                                            System.out.println("dir is D");
                                             imageView = new ImageView(imageOfPacmanDown);
                                             break;
                                         case L:
-                                            System.out.println("dir is L");
                                             imageView = new ImageView(imageOfPacmanLeft);
                                             break;
                                         case U:
-                                            System.out.println("dir is U");
                                             imageView = new ImageView(imageOfPacmanUp);
                                             break;
                                         default:
-                                            System.out.println("dir is R");
                                             imageView = new ImageView(imageOfPacmanRight);  
                                             break;
                                     }
@@ -320,7 +316,7 @@ public class Main extends Application {
         VBox vbox = new VBox();
 
         MazeConfigure cfg = new MazeConfigure();
-        cfg.readFromFile("/home/vlad/Desktop/ija/IJA-project/data/maps/tmp.txt");
+        cfg.readFromFile("data/maps/tmp.txt");
         cfg.stopReading();
         maze = cfg.createMaze();
         VBox mazeVbox = buildMaze(maze);
