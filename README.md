@@ -7,6 +7,7 @@ Have fun playing the game!
 
 ------
 # How to run
+java --module-path lib --add-modules javafx.controls,javafx.fxml -jar target/IJA-1.0.0-jar-with-dependencies.jar
 ------
 # Contributors
 Team leader: Kravchuk Marina  (xkravc02)
