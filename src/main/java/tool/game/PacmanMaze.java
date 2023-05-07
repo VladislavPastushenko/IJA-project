@@ -3,7 +3,6 @@ package tool.game;
 import java.util.ArrayList;
 import java.util.List;
 
-import javafx.scene.control.skin.TextInputControlSkin.Direction;
 import tool.common.CommonField;
 import tool.common.CommonMaze;
 import tool.common.CommonMazeObject;
@@ -112,7 +111,15 @@ public class PacmanMaze implements CommonMaze {
 
                 if (field.canMove()) {
                     if (field.isEmpty()) {
-                        result = result.concat(".");
+                        if (field.isTarget()) {
+                            result = result.concat("T");
+                        }
+                        else if (field.isKey()) {
+                            result = result.concat("K");
+                        }
+                        else {
+                            result = result.concat(".");
+                        }
                     }
                     else {
                         CommonMazeObject mazeObject = field.get();
