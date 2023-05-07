@@ -5,6 +5,8 @@ import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.scene.*;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.stage.*;
 import javafx.geometry.Insets;
@@ -16,6 +18,8 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.util.Duration;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.net.URL;
 
 import tool.common.*;
@@ -27,9 +31,18 @@ public class Main extends Application {
     Direction direction = null;
     CommonMaze maze;
 
-    public VBox buildMaze(CommonMaze maze) {
+    public VBox buildMaze(CommonMaze maze) throws FileNotFoundException {
         VBox vbox = new VBox();
         vbox.setAlignment(Pos.CENTER);
+        Image imageOfGhost = new Image(new FileInputStream("/Users/marina/IJA-project/src/main/java/tool/images/ghost.png"));
+        Image imageOfWall = new Image(new FileInputStream("/Users/marina/IJA-project/src/main/java/tool/images/bedrock.png"));
+        Image imageOfTarget = new Image(new FileInputStream("/Users/marina/IJA-project/src/main/java/tool/images/target.png"));
+        Image imageOfKey = new Image(new FileInputStream("/Users/marina/IJA-project/src/main/java/tool/images/key.png"));
+        Image imageOfPacmanUp = new Image(new FileInputStream("/Users/marina/IJA-project/src/main/java/tool/images/pacmanUp.png"));
+        Image imageOfPacmanRight = new Image(new FileInputStream("/Users/marina/IJA-project/src/main/java/tool/images/pacmanRight.png"));
+        Image imageOfPacmanLeft = new Image(new FileInputStream("/Users/marina/IJA-project/src/main/java/tool/images/pacmanLeft.png"));
+        Image imageOfPacmanDown = new Image(new FileInputStream("/Users/marina/IJA-project/src/main/java/tool/images/pacmanDown.png"));
+        Image imageOfPath = new Image(new FileInputStream("/Users/marina/IJA-project/src/main/java/tool/images/dirt.png"));
 
         for (int row = 0; row < maze.numRows(); row++) {
 
@@ -40,33 +53,57 @@ public class Main extends Application {
                 CommonField field = maze.getField(row, col);
 
                 Label fieldLabel;
+                ImageView imageView;
+                
 
                 if (field.canMove()) {
                     if (field.isEmpty()) {
                         if (field.isTarget()) {
-                            fieldLabel = new Label("T");
+                            imageView = new ImageView(imageOfTarget);
                         }
                         else if (field.isKey()) {
-                            fieldLabel = new Label("K");
+                            imageView = new ImageView(imageOfKey);
                         }
                         else {
-                            fieldLabel = new Label("_");
+                            imageView = new ImageView(imageOfPath);
                         }
                     }
                     else {
                         CommonMazeObject obj = field.get();
                         if (obj.isPacman()) {
                             pacman = obj;
-                            fieldLabel = new Label("P");
+                            if (direction == null){
+                                
+                                imageView = new ImageView(imageOfPacmanRight);
+                            } else {
+                                switch (direction) {
+                                    case D:
+                                        System.out.println("dir is D");
+                                        imageView = new ImageView(imageOfPacmanDown);
+                                        break;
+                                    case L:
+                                        System.out.println("dir is L");
+                                        imageView = new ImageView(imageOfPacmanLeft);
+                                        break;
+                                    case U:
+                                        System.out.println("dir is U");
+                                        imageView = new ImageView(imageOfPacmanUp);
+                                        break;
+                                    default:
+                                        System.out.println("dir is R");
+                                        imageView = new ImageView(imageOfPacmanRight);  
+                                        break;
+                                }
+                            }
                         } else {
-                            fieldLabel = new Label("G");
+                            imageView = new ImageView(imageOfGhost);
                         }
                     }
                 }
                 else {
-                    fieldLabel = new Label("X");
+                    imageView = new ImageView(imageOfWall);
                 }
-                hbox.getChildren().add(fieldLabel);
+                hbox.getChildren().add(imageView);
             }
             vbox.getChildren().add(hbox);
         }
@@ -77,7 +114,7 @@ public class Main extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         MazeConfigure cfg = new MazeConfigure();
-        cfg.readFromFile("/home/vlad/Desktop/ija/IJA-project/mapa01.txt");
+        cfg.readFromFile("/Users/marina/IJA-project/mapa01.txt");
         cfg.stopReading();
 
 
@@ -115,14 +152,19 @@ public class Main extends Application {
 
             @Override
             public void handle(ActionEvent event) {
-                tick(stage);
+                try {
+                    tick(stage);
+                } catch (FileNotFoundException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
             }
         }));
         eventLoop.setCycleCount(Timeline.INDEFINITE);
         eventLoop.play();
     }
 
-    public void tick(Stage stage) {
+    public void tick(Stage stage) throws FileNotFoundException {
         if (direction != null) {
             pacman.move(direction);
         }
