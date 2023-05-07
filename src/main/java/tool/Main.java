@@ -1,6 +1,5 @@
 package tool;
 
-import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -14,20 +13,17 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.stage.*;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.fxml.FXMLLoader;
 import javafx.concurrent.Task;
-import javafx.concurrent.WorkerStateEvent;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.util.Duration;
 
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.net.URL;
 
 import tool.common.*;
 import tool.common.CommonField.Direction;
@@ -40,12 +36,14 @@ public class Main extends Application {
     Timeline eventLoop;
     Boolean playPauseEventLoop = false;
     String log = "";
+    String details = "";
 
     @Override
     public void start(Stage stage) throws Exception {
         VBox vbox = new VBox();
         vbox.setPadding(new Insets(10, 10, 10, 10));
         vbox.setSpacing(10);
+        vbox.setAlignment(Pos.CENTER);
 
         Button btnNewGame = new Button("Start new game");
         btnNewGame.addEventHandler(ActionEvent.ACTION, e -> {
@@ -70,7 +68,7 @@ public class Main extends Application {
 
     public void newGame(Stage stage) {
         MazeConfigure cfg = new MazeConfigure();
-        cfg.readFromFile("data/maps/mapa03.txt");
+        cfg.readFromFile("data/maps/mapa01.txt");
         cfg.stopReading();
 
         maze = cfg.createMaze();
@@ -132,7 +130,12 @@ public class Main extends Application {
         maze.randomGhostsMovement();
 
         VBox vbox = buildMaze(maze);
-        Scene newScene = new Scene(vbox);
+        HBox hbox = new HBox(10, vbox);
+        Label detailsLabel = new Label(details);
+        detailsLabel.setAlignment(Pos.CENTER);
+
+        hbox.getChildren().addAll(detailsLabel);
+        Scene newScene = new Scene(hbox);
         stage.setScene(newScene);
 
         newScene.setOnKeyPressed(e -> {
@@ -183,12 +186,21 @@ public class Main extends Application {
                         if (field.isEmpty()) {
                             if (field.isTarget()) {
                                 imageView = new ImageView(imageOfTarget);
+                                imageView.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> {
+                                    details = "It is our exit!";
+                                });
                             }
                             else if (field.isKey()) {
                                 imageView = new ImageView(imageOfKey);
+                                imageView.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> {
+                                    details = "Collect all keys to open the exit!";
+                                });
                             }
                             else {
                                 imageView = new ImageView(imageOfPath);
+                                imageView.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> {
+                                    details = "Just path";
+                                });
                             }
                         }
                         else {
@@ -196,7 +208,6 @@ public class Main extends Application {
                             if (obj.isPacman()) {
                                 pacman = obj;
                                 if (direction == null){
-
                                     imageView = new ImageView(imageOfPacmanRight);
                                 } else {
                                     switch (direction) {
@@ -210,17 +221,26 @@ public class Main extends Application {
                                             imageView = new ImageView(imageOfPacmanUp);
                                             break;
                                         default:
-                                            imageView = new ImageView(imageOfPacmanRight);  
+                                            imageView = new ImageView(imageOfPacmanRight);
                                             break;
                                     }
                                 }
+                                imageView.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> {
+                                    details = "Pacman";
+                                });
                             } else {
                                 imageView = new ImageView(imageOfGhost);
+                                imageView.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> {
+                                    details = "It's a ghost! Be careful!";
+                                });
                             }
                         }
                     }
                     else {
                         imageView = new ImageView(imageOfWall);
+                        imageView.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> {
+                            details = "It's just a wall";
+                        });
                     }
                     hbox.getChildren().add(imageView);
                 }
@@ -265,8 +285,12 @@ public class Main extends Application {
         saveButton.addEventHandler(ActionEvent.ACTION, e -> {
             saveLog(stage);
         });
+        Button btnPlayback = new Button("Playback");
+        btnPlayback.addEventHandler(ActionEvent.ACTION, e -> {
+            playbackStart(stage);
+        });
 
-        vbox.getChildren().addAll(endLabel, btnNewGame, saveButton);
+        vbox.getChildren().addAll(endLabel, btnNewGame, saveButton, btnPlayback);
 
 
         Scene newScene = new Scene(vbox);
@@ -355,10 +379,25 @@ public class Main extends Application {
             playAndPause.setDisable(true);
         }
 
+        Button exitButton = new Button("Exit");
+        exitButton.addEventHandler(ActionEvent.ACTION, e -> {
+            playPauseEventLoop = false;
+            try {
+                start(stage);
+            } finally {
+                return;
+            }
+        });
+        if (playPauseEventLoop) {
+            exitButton.setDisable(true);
+        }
+
+
         hbox.getChildren().addAll(btnPrevStep, playAndPause, btnNextStep);
         hbox.setAlignment(Pos.CENTER);
 
-        vbox.getChildren().addAll(mazeVbox, hbox);
+        vbox.getChildren().addAll(mazeVbox, hbox, exitButton);
+        vbox.setAlignment(Pos.CENTER);
         Scene newScene = new Scene(vbox);
         stage.setScene(newScene);
 
