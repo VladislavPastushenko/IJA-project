@@ -12,6 +12,8 @@ import javafx.application.Application;
 import javafx.scene.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.stage.*;
 import javafx.geometry.Insets;
@@ -23,6 +25,9 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.util.Duration;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.net.URL;
 
 import tool.common.*;
 import tool.common.CommonField.Direction;
@@ -149,50 +154,89 @@ public class Main extends Application {
 
 
     public VBox buildMaze(CommonMaze maze) {
-        VBox vbox = new VBox();
-        vbox.setAlignment(Pos.CENTER);
+        try {
+            VBox vbox = new VBox();
+            vbox.setAlignment(Pos.CENTER);
+            Image imageOfGhost = new Image(new FileInputStream("/Users/marina/IJA-project/src/main/java/tool/images/ghost.png"));
+            Image imageOfWall = new Image(new FileInputStream("/Users/marina/IJA-project/src/main/java/tool/images/bedrock.png"));
+            Image imageOfTarget = new Image(new FileInputStream("/Users/marina/IJA-project/src/main/java/tool/images/target.png"));
+            Image imageOfKey = new Image(new FileInputStream("/Users/marina/IJA-project/src/main/java/tool/images/key.png"));
+            Image imageOfPacmanUp = new Image(new FileInputStream("/Users/marina/IJA-project/src/main/java/tool/images/pacmanUp.png"));
+            Image imageOfPacmanRight = new Image(new FileInputStream("/Users/marina/IJA-project/src/main/java/tool/images/pacmanRight.png"));
+            Image imageOfPacmanLeft = new Image(new FileInputStream("/Users/marina/IJA-project/src/main/java/tool/images/pacmanLeft.png"));
+            Image imageOfPacmanDown = new Image(new FileInputStream("/Users/marina/IJA-project/src/main/java/tool/images/pacmanDown.png"));
+            Image imageOfPath = new Image(new FileInputStream("/Users/marina/IJA-project/src/main/java/tool/images/dirt.png"));
+            
+            for (int row = 0; row < maze.numRows(); row++) {
 
-        for (int row = 0; row < maze.numRows(); row++) {
+                HBox hbox = new HBox();
+                hbox.setAlignment(Pos.CENTER);
 
-            HBox hbox = new HBox();
-            hbox.setAlignment(Pos.CENTER);
+                for (int col = 0; col < maze.numCols(); col++) {
+                    CommonField field = maze.getField(row, col);
 
-            for (int col = 0; col < maze.numCols(); col++) {
-                CommonField field = maze.getField(row, col);
+                    Label fieldLabel;
+                    ImageView imageView;
+                    
 
-                Label fieldLabel;
-
-                if (field.canMove()) {
-                    if (field.isEmpty()) {
-                        if (field.isTarget()) {
-                            fieldLabel = new Label("T");
-                        }
-                        else if (field.isKey()) {
-                            fieldLabel = new Label("K");
+                    if (field.canMove()) {
+                        if (field.isEmpty()) {
+                            if (field.isTarget()) {
+                                imageView = new ImageView(imageOfTarget);
+                            }
+                            else if (field.isKey()) {
+                                imageView = new ImageView(imageOfKey);
+                            }
+                            else {
+                                imageView = new ImageView(imageOfPath);
+                            }
                         }
                         else {
-                            fieldLabel = new Label("_");
+                            CommonMazeObject obj = field.get();
+                            if (obj.isPacman()) {
+                                pacman = obj;
+                                if (direction == null){
+                                    
+                                    imageView = new ImageView(imageOfPacmanRight);
+                                } else {
+                                    switch (direction) {
+                                        case D:
+                                            System.out.println("dir is D");
+                                            imageView = new ImageView(imageOfPacmanDown);
+                                            break;
+                                        case L:
+                                            System.out.println("dir is L");
+                                            imageView = new ImageView(imageOfPacmanLeft);
+                                            break;
+                                        case U:
+                                            System.out.println("dir is U");
+                                            imageView = new ImageView(imageOfPacmanUp);
+                                            break;
+                                        default:
+                                            System.out.println("dir is R");
+                                            imageView = new ImageView(imageOfPacmanRight);  
+                                            break;
+                                    }
+                                }
+                            } else {
+                                imageView = new ImageView(imageOfGhost);
+                            }
                         }
                     }
                     else {
-                        CommonMazeObject obj = field.get();
-                        if (obj.isPacman()) {
-                            pacman = obj;
-                            fieldLabel = new Label("P");
-                        } else {
-                            fieldLabel = new Label("G");
-                        }
+                        imageView = new ImageView(imageOfWall);
                     }
+                    hbox.getChildren().add(imageView);
                 }
-                else {
-                    fieldLabel = new Label("X");
-                }
-                hbox.getChildren().add(fieldLabel);
+                vbox.getChildren().add(hbox);
             }
-            vbox.getChildren().add(hbox);
-        }
 
-        return vbox;
+            return vbox;
+        }
+        catch (Exception e) {
+            System.out.println("Images are not found");
+            return new VBox();
+        }
     }
 
     public static void delay(long millis, Runnable continuation) {
