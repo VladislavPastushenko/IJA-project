@@ -2,6 +2,7 @@ package tool.game;
 
 import java.util.Objects;
 
+
 import tool.common.CommonField;
 import tool.common.CommonMazeObject;
 
@@ -26,6 +27,7 @@ public class PacmanObject implements CommonMazeObject {
 
         if (Objects.nonNull(myField.nextField(dir).get())) {
             this.damage();
+            return true;
         }
 
         PacmanObject tmp = this;
