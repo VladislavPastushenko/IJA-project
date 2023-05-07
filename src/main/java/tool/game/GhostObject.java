@@ -1,3 +1,9 @@
+/**
+ * Project name: IJA-project
+ * File name: GhostObject.java
+ * Authors: Kravchuk Marina(xkravc02)
+ * Description: Class for the walls in the maze.
+ */
 package tool.game;
 
 import java.util.Objects;

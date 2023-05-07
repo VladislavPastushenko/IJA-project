@@ -1,3 +1,9 @@
+/**
+ * Project name: IJA-project
+ * File name: MazeConfigure.java
+ * Authors: Pastushenko Vladislav(xpastu04) + Kravchuk Marina(xkravc02)
+ * Description: MazeConfigure class represents maze configuration from file
+ */
 package tool.game;
 
 import java.io.BufferedReader;
@@ -29,6 +35,8 @@ public class MazeConfigure {
         this.state = State.CREATED;
     }
 
+    // map reading from a txt file
+    // param - path to file
     public boolean readFromFile(String path) {
         int row = 0;
         int col = 0;

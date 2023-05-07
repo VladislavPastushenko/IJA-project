@@ -1,3 +1,11 @@
+/**
+ * Project name: IJA-project
+ * File name: Main.java
+ * Date: 06.05.2023
+ * Last update: 06.05.2023
+ * Authors: Kravchuk Marina(xkravc02) + Pastushenko Vladislav(xpastu04)
+ * Description: Main class is the entry point of the game application.
+ */
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -28,6 +36,9 @@ import tool.common.*;
 import tool.common.CommonField.Direction;
 import tool.game.*;
 
+/**
+ * The Main class is the entry point of the game application.
+ */
 public class Main extends Application {
     CommonMazeObject pacman;
     Direction direction = null;
@@ -37,6 +48,7 @@ public class Main extends Application {
     String log = "";
     String details = "";
 
+    //starting point (Home page)
     @Override
     public void start(Stage stage) throws Exception {
         VBox vbox = new VBox();
@@ -68,6 +80,7 @@ public class Main extends Application {
         stage.show();
     }
 
+    //Choosing a map
     public void selectGame(Stage stage) {
         VBox vbox = new VBox();
         vbox.setMinWidth(600);
@@ -98,6 +111,7 @@ public class Main extends Application {
         newScene.getStylesheets().add("style.css");
         stage.setScene(newScene);
     }
+
 
     public void newGame(Stage stage, String path) {
         MazeConfigure cfg = new MazeConfigure();

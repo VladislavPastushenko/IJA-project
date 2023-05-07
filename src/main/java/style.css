@@ -1,4 +1,8 @@
-
+/*  Project name: IJA-project
+ * File name: style.css
+ * Authors: Pastushenko Vladislav(xpastu04)
+ * Description: style of text in the application
+ */
 .label {
    -fx-padding: 10;
    -fx-font-weight: 700;

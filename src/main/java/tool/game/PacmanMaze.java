@@ -1,3 +1,9 @@
+/**
+ * Project name: IJA-project
+ * File name: PacmanMaze.java
+ * Authors: Pastushenko Vladislav(xpastu04)
+ * Description: PacmanObject class represents pacman object in maze
+ */
 package tool.game;
 
 import java.util.ArrayList;

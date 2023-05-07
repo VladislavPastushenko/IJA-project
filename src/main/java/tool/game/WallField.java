@@ -1,3 +1,9 @@
+/**
+ * Project name: IJA-project
+ * File name: WallField.java
+ * Authors: Kravchuk Marina(xkravc02)
+ * Description: Class for the walls in the maze.
+ */
 package tool.game;
 
 import tool.common.AbstractObservableField;
@@ -6,22 +12,22 @@ import tool.common.CommonMaze;
 import tool.common.CommonMazeObject;
 
 public class WallField extends AbstractObservableField implements CommonField {
-    int fieldRow;
+    int fieldRow; //
     int fieldCol;
 
     CommonMaze currentMaze;
 
     public WallField (int row, int col) {
-        fieldRow = row;
-        fieldCol = col;
+        fieldRow = row; //number of rows
+        fieldCol = col; //number of cols
     }
 
-    // done
+    // no object can move on the wall
     public boolean canMove() {
         return false;
     }
 
-    // done
+    // wall never contains any objects
     public boolean isEmpty() {
         return true;
     }
@@ -37,6 +43,8 @@ public class WallField extends AbstractObservableField implements CommonField {
         return (my_wall_obj.fieldRow == (this.fieldRow) && my_wall_obj.fieldCol == (this.fieldCol));
     }
 
+    // wall never contains any objects
+    // returns null
     public CommonMazeObject get() {
         return null;
     }
@@ -63,6 +71,7 @@ public class WallField extends AbstractObservableField implements CommonField {
         return this;
     }
 
+    // wall never contains any objects
     public boolean put(CommonMazeObject object) {
         throw new UnsupportedOperationException("");
     }
@@ -70,10 +79,12 @@ public class WallField extends AbstractObservableField implements CommonField {
         return true;
     }
 
+    // wall never contains any objects
 	public boolean contains(CommonMazeObject obj) {
 		return false;
 	}
 
+    // the wall cannot be an exit from the labyrinth
     public boolean isTarget() {
         return false;
     }

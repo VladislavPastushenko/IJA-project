@@ -1,3 +1,9 @@
+/**
+ * Project name: IJA-project
+ * File name: PathField.java
+ * Authors: Kravchuk Marina(xkravc02)
+ * Description: Class for the paths in the maze.
+ */
 package tool.game;
 
 import tool.common.AbstractObservableField;
