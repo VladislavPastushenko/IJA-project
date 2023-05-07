@@ -1,4 +1,5 @@
 package tool.common;
+import java.util.List;
 
 public interface CommonMazeObject {
     public boolean canMove(CommonField.Direction dir);
@@ -14,4 +15,5 @@ public interface CommonMazeObject {
     public int damage();
 
     public boolean getWin();
+
 }

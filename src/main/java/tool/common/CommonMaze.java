@@ -15,4 +15,6 @@ public interface CommonMaze {
     public void randomGhostsMovement();
 
     public boolean keys();
+
+    public String getStringRepresentation();
 }

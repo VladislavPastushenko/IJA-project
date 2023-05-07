@@ -30,8 +30,7 @@ public class PathField extends AbstractObservableField implements CommonField {
     }
 
     public boolean isEmpty() {
-
-        return (ghostObject == null)&&(pacmanObject == null);
+        return (ghostObject == null) && (pacmanObject == null);
     }
 
     public boolean equals(Object obj) {

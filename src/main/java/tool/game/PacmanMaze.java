@@ -94,11 +94,44 @@ public class PacmanMaze implements CommonMaze {
                 CommonField.Direction[] directions = {CommonField.Direction.U, CommonField.Direction.D, CommonField.Direction.L, CommonField.Direction.R};
                 CommonField.Direction direction = directions[randomNum];
                 if (ghostsList.get(i).canMove(direction)) {
-                    System.out.println("MOVEMENT");
                     ghostsList.get(i).move(direction);
                     break;
                 }
             }
         }
+    }
+
+    public String getStringRepresentation() {
+        String result = "";
+        for (int row = 0; row < mazeRows; row++) {
+            for (int col = 0; col < mazeCols; col++) {
+                if (row == 0 || col == 0 || row == mazeRows - 1 || col == mazeCols - 1) {
+                    continue;
+                }
+                CommonField field = mazeBoard[row][col];
+
+                if (field.canMove()) {
+                    if (field.isEmpty()) {
+                        result = result.concat(".");
+                    }
+                    else {
+                        CommonMazeObject mazeObject = field.get();
+                        if (mazeObject.isPacman()) {
+                            result = result.concat("S");
+                        } else {
+                            result = result.concat("G");
+                        }
+                    }
+                }
+                else {
+                    result = result.concat("X");
+                }
+            }
+            if (row == mazeRows - 1 || row == 0) {
+                continue;
+            }
+            result = result.concat("\r\n");
+        }
+        return result;
     }
 }

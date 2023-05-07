@@ -28,6 +28,7 @@ public class GhostObject implements CommonMazeObject {
         if (Objects.nonNull(pacman)) {
             if (pacman.isPacman()) {
                 pacman.damage();
+                return true;
             }
         }
 

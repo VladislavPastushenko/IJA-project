@@ -40,7 +40,7 @@ public class MazeConfigure {
                 if (tmprow == 0){
                     String[] substr;
                     substr = line.split(" ");
-                    tmprow = Integer.parseInt(substr[0]); 
+                    tmprow = Integer.parseInt(substr[0]);
                     tmpcol = Integer.parseInt(substr[1]);
                 } else {
                     if (line.length() != tmpcol){
@@ -51,8 +51,6 @@ public class MazeConfigure {
                 }
 
             }
-            System.out.println(tmprow);
-            System.out.print(tmpcol);
         } catch (IOException e) {
             System.err.println("error" + e.getMessage());
         }
@@ -114,14 +112,14 @@ public class MazeConfigure {
                             this.state = State.ERROR;
                             return false;
                     }
-        
+
                 }
                 processedLinePointer += 1;
             }
         } catch (IOException e) {
             System.err.println("error" + e.getMessage());
         }
-    
+
         return true;
     }
 
