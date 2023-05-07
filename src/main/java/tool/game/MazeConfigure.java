@@ -57,6 +57,8 @@ public class MazeConfigure {
         if (tmprow != row){
             return false;
         }
+        System.out.println(tmpcol);
+        System.out.println(tmprow);
         this.startReading(tmprow, tmpcol);
         this.processLine(path);
         return true;
