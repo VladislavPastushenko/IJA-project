@@ -38,6 +38,7 @@ public class Main extends Application {
     Direction direction = null;
     CommonMaze maze;
     Timeline eventLoop;
+    Boolean playPauseEventLoop = false;
     String log = "";
 
     @Override
@@ -157,16 +158,16 @@ public class Main extends Application {
         try {
             VBox vbox = new VBox();
             vbox.setAlignment(Pos.CENTER);
-            Image imageOfGhost = new Image(new FileInputStream("/Users/marina/IJA-project/src/main/java/tool/images/ghost.png"));
-            Image imageOfWall = new Image(new FileInputStream("/Users/marina/IJA-project/src/main/java/tool/images/bedrock.png"));
-            Image imageOfTarget = new Image(new FileInputStream("/Users/marina/IJA-project/src/main/java/tool/images/target.png"));
-            Image imageOfKey = new Image(new FileInputStream("/Users/marina/IJA-project/src/main/java/tool/images/key.png"));
-            Image imageOfPacmanUp = new Image(new FileInputStream("/Users/marina/IJA-project/src/main/java/tool/images/pacmanUp.png"));
-            Image imageOfPacmanRight = new Image(new FileInputStream("/Users/marina/IJA-project/src/main/java/tool/images/pacmanRight.png"));
-            Image imageOfPacmanLeft = new Image(new FileInputStream("/Users/marina/IJA-project/src/main/java/tool/images/pacmanLeft.png"));
-            Image imageOfPacmanDown = new Image(new FileInputStream("/Users/marina/IJA-project/src/main/java/tool/images/pacmanDown.png"));
-            Image imageOfPath = new Image(new FileInputStream("/Users/marina/IJA-project/src/main/java/tool/images/dirt.png"));
-            
+            Image imageOfGhost = new Image(new FileInputStream("/home/vlad/Desktop/ija/IJA-project/src/main/java/tool/images/ghost.png"));
+            Image imageOfWall = new Image(new FileInputStream("/home/vlad/Desktop/ija/IJA-project/src/main/java/tool/images/bedrock.png"));
+            Image imageOfTarget = new Image(new FileInputStream("/home/vlad/Desktop/ija/IJA-project/src/main/java/tool/images/target.png"));
+            Image imageOfKey = new Image(new FileInputStream("/home/vlad/Desktop/ija/IJA-project/src/main/java/tool/images/key.png"));
+            Image imageOfPacmanUp = new Image(new FileInputStream("/home/vlad/Desktop/ija/IJA-project/src/main/java/tool/images/pacmanUp.png"));
+            Image imageOfPacmanRight = new Image(new FileInputStream("/home/vlad/Desktop/ija/IJA-project/src/main/java/tool/images/pacmanRight.png"));
+            Image imageOfPacmanLeft = new Image(new FileInputStream("/home/vlad/Desktop/ija/IJA-project/src/main/java/tool/images/pacmanLeft.png"));
+            Image imageOfPacmanDown = new Image(new FileInputStream("/home/vlad/Desktop/ija/IJA-project/src/main/java/tool/images/pacmanDown.png"));
+            Image imageOfPath = new Image(new FileInputStream("/home/vlad/Desktop/ija/IJA-project/src/main/java/tool/images/dirt.png"));
+
             for (int row = 0; row < maze.numRows(); row++) {
 
                 HBox hbox = new HBox();
@@ -177,7 +178,7 @@ public class Main extends Application {
 
                     Label fieldLabel;
                     ImageView imageView;
-                    
+
 
                     if (field.canMove()) {
                         if (field.isEmpty()) {
@@ -196,24 +197,20 @@ public class Main extends Application {
                             if (obj.isPacman()) {
                                 pacman = obj;
                                 if (direction == null){
-                                    
+
                                     imageView = new ImageView(imageOfPacmanRight);
                                 } else {
                                     switch (direction) {
                                         case D:
-                                            System.out.println("dir is D");
                                             imageView = new ImageView(imageOfPacmanDown);
                                             break;
                                         case L:
-                                            System.out.println("dir is L");
                                             imageView = new ImageView(imageOfPacmanLeft);
                                             break;
                                         case U:
-                                            System.out.println("dir is U");
                                             imageView = new ImageView(imageOfPacmanUp);
                                             break;
                                         default:
-                                            System.out.println("dir is R");
                                             imageView = new ImageView(imageOfPacmanRight);  
                                             break;
                                     }
@@ -333,17 +330,42 @@ public class Main extends Application {
         btnNextStep.addEventHandler(ActionEvent.ACTION, e -> {
             playback(stage, step + 1);
         });
+        int stepsNumber = getLogStepsNumber(log);
+        if (stepsNumber == step + 1) {
+            btnNextStep.setDisable(true);
+        }
 
         Button btnPrevStep = new Button("Prev step");
         btnPrevStep.addEventHandler(ActionEvent.ACTION, e -> {
-            playback(stage, step + -1);
+            playback(stage, step - 1);
         });
+        if (step == 0) {
+            btnPrevStep.setDisable(true);
+        }
 
-        hbox.getChildren().addAll(btnNextStep, btnPrevStep);
+        Button playAndPause = new Button("Play/pause");
+        playAndPause.addEventHandler(ActionEvent.ACTION, e -> {
+            playPauseEventLoop = !playPauseEventLoop;
+            if (playPauseEventLoop) {
+                playback(stage, step + 1);
+                return;
+            }
+        });
+        if (stepsNumber == step + 1) {
+            playPauseEventLoop = false;
+            playAndPause.setDisable(true);
+        }
+
+        hbox.getChildren().addAll(btnPrevStep, playAndPause, btnNextStep);
+        hbox.setAlignment(Pos.CENTER);
 
         vbox.getChildren().addAll(mazeVbox, hbox);
         Scene newScene = new Scene(vbox);
         stage.setScene(newScene);
+
+        if (playPauseEventLoop) {
+            delay(500, () -> playback(stage, step + 1));
+        }
     }
 
     public String getMazePhaseFromLog(String log, int number) {
